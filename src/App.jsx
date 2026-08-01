@@ -26,6 +26,8 @@ import {
   Check,
   LogOut,
   WifiOff,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 
 const STORAGE_KEY = "school-schedule-data-v2";
@@ -1139,179 +1141,9 @@ const TEACHER_USERNAME = import.meta.env.VITE_TEACHER_USERNAME || "teacher";
 const TEACHER_PASSWORD = import.meta.env.VITE_TEACHER_PASSWORD || "teacher123";
 const SESSION_KEY = "school-schedule-session-role";
 
-function LoginScreen({ t, lang, setLang, onLogin }) {
-  const [roleChoice, setRoleChoice] = useState("teacher");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-
-  const submit = () => {
-    const ok =
-      roleChoice === "admin"
-        ? username === ADMIN_USERNAME && password === ADMIN_PASSWORD
-        : username === TEACHER_USERNAME && password === TEACHER_PASSWORD;
-    if (ok) {
-      try {
-        sessionStorage.setItem(SESSION_KEY, roleChoice);
-      } catch (e) {}
-      onLogin(roleChoice);
-    } else {
-      setError(true);
-    }
-  };
-
+function GlobalStyle() {
   return (
-    <div
-      className="min-h-screen flex items-center justify-center px-5"
-      style={{
-        background:
-          "radial-gradient(1100px 600px at 15% -10%, #241B54 0%, transparent 55%), radial-gradient(900px 500px at 100% 0%, #0D3B36 0%, transparent 45%), #0E1023",
-      }}
-    >
-      <div className="w-full max-w-sm bg-panel border border-border-strong rounded-2xl shadow-2xl p-6">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2.5">
-            <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-              style={{ background: "linear-gradient(135deg,#8B7CF6,#2DD4BF)" }}
-            >
-              <CalendarDays size={17} className="text-white" />
-            </div>
-            <span className="font-display text-base text-text">{t.siteTitle}</span>
-          </div>
-          <button
-            onClick={() => setLang(lang === "om" ? "en" : "om")}
-            className="w-8 h-8 rounded-lg border border-border-strong bg-panel-soft flex items-center justify-center text-text-dim"
-            aria-label="language"
-          >
-            <Languages size={14} />
-          </button>
-        </div>
-        <p className="font-display text-lg text-text mb-1">{t.loginTitle}</p>
-        <p className="text-xs text-text-dim mb-4">{t.loginDesc}</p>
-
-        <div className="flex bg-panel-soft border border-border-strong rounded-lg p-0.5 text-sm mb-3">
-          <button
-            type="button"
-            onClick={() => {
-              setRoleChoice("admin");
-              setError(false);
-            }}
-            className={`flex-1 px-3.5 py-1.5 rounded-md transition-colors ${
-              roleChoice === "admin" ? "text-white font-semibold" : "text-text-dim"
-            }`}
-            style={roleChoice === "admin" ? { background: "linear-gradient(135deg,#8B7CF6,#6C5CE0)" } : undefined}
-          >
-            {t.admin}
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              setRoleChoice("teacher");
-              setError(false);
-            }}
-            className={`flex-1 px-3.5 py-1.5 rounded-md transition-colors ${
-              roleChoice === "teacher" ? "text-white font-semibold" : "text-text-dim"
-            }`}
-            style={roleChoice === "teacher" ? { background: "linear-gradient(135deg,#8B7CF6,#6C5CE0)" } : undefined}
-          >
-            {t.teacherRole}
-          </button>
-        </div>
-
-        <TextInput
-          autoFocus
-          value={username}
-          onChange={(e) => {
-            setUsername(e.target.value);
-            setError(false);
-          }}
-          placeholder={t.loginUsernamePlaceholder}
-          className="w-full mb-2"
-        />
-        <TextInput
-          type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError(false);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") submit();
-          }}
-          placeholder={t.adminLockPlaceholder}
-          className="w-full mb-2"
-        />
-        {error && <p className="text-xs text-danger mb-2">{t.loginWrong}</p>}
-        <Btn type="button" onClick={submit} className="w-full mt-2">
-          {t.loginButton}
-        </Btn>
-      </div>
-    </div>
-  );
-}
-
-export default function App() {
-  const { data, setData, loading, pendingWrites } = useSchoolData();
-  const online = useOnlineStatus();
-  const [session, setSession] = useState(() => {
-    try {
-      return sessionStorage.getItem(SESSION_KEY) || null;
-    } catch (e) {
-      return null;
-    }
-  });
-  const [role, setRole] = useState(session || "teacher");
-  const [tab, setTab] = useState("teachers");
-  const [theme, setTheme] = useState("dark");
-  const [lang, setLang] = useState("om");
-  const [exportImageFn, setExportImageFn] = useState(null);
-  const [navOpen, setNavOpen] = useState(false);
-  const [showUsage, setShowUsage] = useState(true);
-
-  const t = STRINGS[lang];
-
-  const handleLogin = (loggedInRole) => {
-    setSession(loggedInRole);
-    setRole(loggedInRole);
-  };
-
-  const handleLogout = () => {
-    try {
-      sessionStorage.removeItem(SESSION_KEY);
-    } catch (e) {}
-    setSession(null);
-    setRole("teacher");
-  };
-
-  if (!session) {
-    return <LoginScreen t={t} lang={lang} setLang={setLang} onLogin={handleLogin} />;
-  }
-
-  if (loading || !data) {
-    return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0E1023" }}>
-        <Loader2 size={28} className="text-purple-brand animate-spin" />
-      </div>
-    );
-  }
-
-  const usedTeacherIds = new Set(data.assignments.map((a) => a.teacherId));
-
-  const adminTabs = [
-    { id: "teachers", label: t.tabTeachers, icon: Users },
-    { id: "classes", label: t.tabClasses, icon: Building2 },
-    { id: "subjects", label: t.tabSubjects, icon: BookOpen },
-    { id: "assignments", label: t.tabAssignments, icon: ClipboardList },
-    { id: "schedule", label: t.tabSchedule, icon: CalendarDays },
-  ];
-
-  const registerExport = (fn) => setExportImageFn(() => fn);
-  const canExport = !!(data.schedule && (role === "teacher" || tab === "schedule"));
-
-  return (
-    <div data-theme={theme} className="min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
-      <style>{`
+    <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
         .font-display { font-family: 'Sora', 'Inter', sans-serif; font-weight: 700; }
 
@@ -1388,7 +1220,193 @@ export default function App() {
           #printable-schedule { position: absolute; top: 0; left: 0; width: 100%; }
         }
       `}</style>
+  );
+}
 
+function LoginScreen({ t, lang, setLang, onLogin }) {
+  const [roleChoice, setRoleChoice] = useState("teacher");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState(false);
+
+  const submit = () => {
+    const ok =
+      roleChoice === "admin"
+        ? username === ADMIN_USERNAME && password === ADMIN_PASSWORD
+        : username === TEACHER_USERNAME && password === TEACHER_PASSWORD;
+    if (ok) {
+      try {
+        sessionStorage.setItem(SESSION_KEY, roleChoice);
+      } catch (e) {}
+      onLogin(roleChoice);
+    } else {
+      setError(true);
+    }
+  };
+
+  return (
+    <div
+      data-theme="dark"
+      className="min-h-screen flex items-center justify-center px-5"
+      style={{ fontFamily: "'Inter', sans-serif", background: "var(--bg-grad)" }}
+    >
+      <GlobalStyle />
+      <div className="w-full max-w-sm bg-panel border border-border-strong rounded-2xl shadow-2xl p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2.5">
+            <div
+              className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+              style={{ background: "linear-gradient(135deg,#8B7CF6,#2DD4BF)" }}
+            >
+              <CalendarDays size={17} className="text-white" />
+            </div>
+            <span className="font-display text-base text-text">{t.siteTitle}</span>
+          </div>
+          <button
+            onClick={() => setLang(lang === "om" ? "en" : "om")}
+            className="w-8 h-8 rounded-lg border border-border-strong bg-panel-soft flex items-center justify-center text-text-dim"
+            aria-label="language"
+          >
+            <Languages size={14} />
+          </button>
+        </div>
+        <p className="font-display text-lg text-text mb-1">{t.loginTitle}</p>
+        <p className="text-xs text-text-dim mb-4">{t.loginDesc}</p>
+
+        <div className="flex bg-panel-soft border border-border-strong rounded-lg p-0.5 text-sm mb-3">
+          <button
+            type="button"
+            onClick={() => {
+              setRoleChoice("admin");
+              setError(false);
+            }}
+            className={`flex-1 px-3.5 py-1.5 rounded-md transition-colors ${
+              roleChoice === "admin" ? "text-white font-semibold" : "text-text-dim"
+            }`}
+            style={roleChoice === "admin" ? { background: "linear-gradient(135deg,#8B7CF6,#6C5CE0)" } : undefined}
+          >
+            {t.admin}
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setRoleChoice("teacher");
+              setError(false);
+            }}
+            className={`flex-1 px-3.5 py-1.5 rounded-md transition-colors ${
+              roleChoice === "teacher" ? "text-white font-semibold" : "text-text-dim"
+            }`}
+            style={roleChoice === "teacher" ? { background: "linear-gradient(135deg,#8B7CF6,#6C5CE0)" } : undefined}
+          >
+            {t.teacherRole}
+          </button>
+        </div>
+
+        <TextInput
+          autoFocus
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setError(false);
+          }}
+          placeholder={t.loginUsernamePlaceholder}
+          className="w-full mb-2"
+        />
+        <div className="relative mb-2">
+          <TextInput
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(false);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") submit();
+            }}
+            placeholder={t.adminLockPlaceholder}
+            className="w-full pr-9"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((v) => !v)}
+            className="absolute right-2.5 top-1/2 -translate-y-1/2 text-text-faint hover-text-text"
+            aria-label={showPassword ? "hide password" : "show password"}
+            tabIndex={-1}
+          >
+            {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
+          </button>
+        </div>
+        {error && <p className="text-xs text-danger mb-2">{t.loginWrong}</p>}
+        <Btn type="button" onClick={submit} className="w-full mt-2">
+          {t.loginButton}
+        </Btn>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  const { data, setData, loading, pendingWrites } = useSchoolData();
+  const online = useOnlineStatus();
+  const [session, setSession] = useState(() => {
+    try {
+      return sessionStorage.getItem(SESSION_KEY) || null;
+    } catch (e) {
+      return null;
+    }
+  });
+  const [role, setRole] = useState(session || "teacher");
+  const [tab, setTab] = useState("teachers");
+  const [theme, setTheme] = useState("dark");
+  const [lang, setLang] = useState("om");
+  const [exportImageFn, setExportImageFn] = useState(null);
+  const [navOpen, setNavOpen] = useState(false);
+  const [showUsage, setShowUsage] = useState(true);
+
+  const t = STRINGS[lang];
+
+  const handleLogin = (loggedInRole) => {
+    setSession(loggedInRole);
+    setRole(loggedInRole);
+  };
+
+  const handleLogout = () => {
+    try {
+      sessionStorage.removeItem(SESSION_KEY);
+    } catch (e) {}
+    setSession(null);
+    setRole("teacher");
+  };
+
+  if (!session) {
+    return <LoginScreen t={t} lang={lang} setLang={setLang} onLogin={handleLogin} />;
+  }
+
+  if (loading || !data) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ background: "#0E1023" }}>
+        <Loader2 size={28} className="text-purple-brand animate-spin" />
+      </div>
+    );
+  }
+
+  const usedTeacherIds = new Set(data.assignments.map((a) => a.teacherId));
+
+  const adminTabs = [
+    { id: "teachers", label: t.tabTeachers, icon: Users },
+    { id: "classes", label: t.tabClasses, icon: Building2 },
+    { id: "subjects", label: t.tabSubjects, icon: BookOpen },
+    { id: "assignments", label: t.tabAssignments, icon: ClipboardList },
+    { id: "schedule", label: t.tabSchedule, icon: CalendarDays },
+  ];
+
+  const registerExport = (fn) => setExportImageFn(() => fn);
+  const canExport = !!(data.schedule && (role === "teacher" || tab === "schedule"));
+
+  return (
+    <div data-theme={theme} className="min-h-screen" style={{ fontFamily: "'Inter', sans-serif" }}>
+      <GlobalStyle />
       <div style={{ background: "var(--bg-grad)", minHeight: "100vh" }}>
         <header className="border-b border-border px-5 py-4 md:px-8">
           <div className="max-w-5xl mx-auto flex flex-col gap-3">
