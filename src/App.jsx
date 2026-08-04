@@ -28,6 +28,10 @@ import {
   WifiOff,
   Eye,
   EyeOff,
+  HelpCircle,
+  LogIn,
+  Video,
+  Youtube,
 } from "lucide-react";
 
 const STORAGE_KEY = "school-schedule-data-v2";
@@ -119,6 +123,33 @@ const STRINGS = {
     usageTitle: "Akkaataa Itti Fayyadamaa",
     usageText:
       "1) \"Barsiisota\", \"Kutaalee\" fi \"Barnoota\" galchi. 2) \"Ramaddii\" jalatti barsiisaa, barnoota, kutaa fi sa'aatii/torban walitti fidi. 3) \"Sagantaa\" jalatti \"Sagantaa Uumi\" tuqi. Barsiisonni immo \"Barsiisaa\" jedhu filatanii maqaa isaanii filachuun sagantaa mataa isaanii ilaaluu danda'u.",
+    menuTutorial: "Tutorial (Akkaataa Fayyadamaa)",
+    tutorialTitle: "Akkaataa Website Kanaa Itti Fayyadamaa",
+    tutorialSubtitle: "Tarkaanfii tokko tokkoon, sagantaa uumuu hanga qooduutti",
+    tutorialVideoLabel: "Viidiyoo Ibsaa",
+    tutorialVideoPlaceholder: "Link YouTube kaa'i (fkn. https://youtube.com/watch?v=XXXXXXX)",
+    tutorialVideoHint:
+      "Bulchaan (Admin) viidiyoo ibsaa YouTube irratti kaa'e link isaa asitti maxxansuu danda'a — hunda keessatti ni mul'ata.",
+    tutorialVideoEmpty: "Hamma ammaatti viidiyoon hin kaa'amne.",
+    tutorialVideoSave: "Viidiyoo Olkaa'i",
+    tutorialVideoInvalid: "Link YouTube sirrii galchi",
+    tutorialStepsHeading: "Tarkaanfiiwwan",
+    tutorialStep1Title: "1. Seensa (Login)",
+    tutorialStep1Desc: "Gahee kee (Bulchaa/Admin ykn Barsiisaa/Teacher) filadhuutii maqaa fayyadamaa fi iyyuu (password) galchi.",
+    tutorialStep2Title: "2. Barsiisota Galchi",
+    tutorialStep2Desc: "\"Barsiisota\" jala deemi, maqaa barsiisaa tokko tokkoon galchi (fkn. Barsiisaa Kadir).",
+    tutorialStep3Title: "3. Kutaalee Galchi",
+    tutorialStep3Desc: "\"Kutaalee\" jala deemi, kutaalee mana barumsichaa galchi (fkn. Kutaa 9A, 9B).",
+    tutorialStep4Title: "4. Barnoota Galchi",
+    tutorialStep4Desc: "\"Barnoota\" jala deemi, maqaa barnootaa galchi (fkn. Herrega, Fiiziksii, Afaan Oromoo).",
+    tutorialStep5Title: "5. Ramaddii Uumi",
+    tutorialStep5Desc: "\"Ramaddii\" jala, barsiisaa + barnoota + kutaa + sa'aatii/torban walitti fidii \"Dabali\" tuqi. Tokkoon tokkoon walitti fidiinsaa galchuu qabda.",
+    tutorialStep6Title: "6. Sagantaa Uumi (Generate)",
+    tutorialStep6Desc: "\"Sagantaa\" jala, sa'aatii guyyaa tokkotti murteessitee \"Sagantaa Uumi\" tuqi — sirni ofumaan sagantaa walitti hin dhahamne siif qindeessa.",
+    tutorialStep7Title: "7. Olkaa'i ykn Qoodi",
+    tutorialStep7Desc: "Menu (⋮) jalatti \"Sagantaa Olkaa'i\" filadhu — PDF (maxxansuuf) ykn Suura/PNG (WhatsApp/Telegram irratti qooduuf) godhuu dandeessa.",
+    tutorialStep8Title: "8. Barsiisaan Sagantaa Ofii Ilaaluu",
+    tutorialStep8Desc: "Barsiisaan gahee \"Barsiisaa\" filatee seenee, maqaa isaa filachuudhaan qofa sagantaa isaa arga — gulaaluu hin danda'u.",
   },
   en: {
     siteTitle: "Baaroo Tumsaa Teachers' Schedule",
@@ -194,6 +225,33 @@ const STRINGS = {
     usageTitle: "How to Use",
     usageText:
       "1) Add \"Teachers\", \"Classes\" and \"Subjects\". 2) Under \"Assignments\", combine a teacher, subject, class, and periods/week. 3) Under \"Schedule\", tap \"Generate Schedule\". Teachers can switch to \"Teacher\" mode and pick their name to view their own schedule.",
+    menuTutorial: "Tutorial (How to Use)",
+    tutorialTitle: "How to Use This Website",
+    tutorialSubtitle: "Step by step, from setup to sharing",
+    tutorialVideoLabel: "Explainer Video",
+    tutorialVideoPlaceholder: "Paste a YouTube link (e.g. https://youtube.com/watch?v=XXXXXXX)",
+    tutorialVideoHint:
+      "The Admin can paste the link of a YouTube explainer video here — it will show for everyone.",
+    tutorialVideoEmpty: "No video has been added yet.",
+    tutorialVideoSave: "Save Video",
+    tutorialVideoInvalid: "Please enter a valid YouTube link",
+    tutorialStepsHeading: "Steps",
+    tutorialStep1Title: "1. Login",
+    tutorialStep1Desc: "Choose your role (Admin or Teacher) and enter your username and password.",
+    tutorialStep2Title: "2. Add Teachers",
+    tutorialStep2Desc: "Go to \"Teachers\" and add each teacher's name one by one (e.g. Teacher Kadir).",
+    tutorialStep3Title: "3. Add Classes",
+    tutorialStep3Desc: "Go to \"Classes\" and add the school's classes (e.g. Grade 9A, 9B).",
+    tutorialStep4Title: "4. Add Subjects",
+    tutorialStep4Desc: "Go to \"Subjects\" and add subject names (e.g. Mathematics, Physics, Afaan Oromoo).",
+    tutorialStep5Title: "5. Create Assignments",
+    tutorialStep5Desc: "Under \"Assignments\", combine a teacher + subject + class + periods/week, then tap \"Add\". Do this for every combination.",
+    tutorialStep6Title: "6. Generate the Schedule",
+    tutorialStep6Desc: "Under \"Schedule\", set periods per day and tap \"Generate Schedule\" — the system automatically arranges everything without conflicts.",
+    tutorialStep7Title: "7. Save or Share",
+    tutorialStep7Desc: "From the menu (⋮), choose \"Save Schedule\" — export as PDF (to print) or Image/PNG (to share on WhatsApp/Telegram).",
+    tutorialStep8Title: "8. Teachers View Their Own Schedule",
+    tutorialStep8Desc: "A teacher logs in with the \"Teacher\" role, picks their name, and sees only their own schedule — they cannot edit it.",
   },
 };
 
@@ -204,9 +262,29 @@ const defaultData = () => ({
   classes: [],
   subjects: [],
   assignments: [],
-  config: { periodsPerDay: 6 },
+  config: { periodsPerDay: 6, tutorialVideoUrl: "" },
   schedule: null,
 });
+
+// Accepts full YouTube URLs (watch?v=, youtu.be/, shorts/) and returns an
+// embeddable player URL, or null if the link isn't a recognizable YouTube URL.
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+  try {
+    const u = new URL(url.trim());
+    let id = "";
+    if (u.hostname.includes("youtu.be")) {
+      id = u.pathname.slice(1);
+    } else if (u.hostname.includes("youtube.com")) {
+      if (u.pathname.startsWith("/shorts/")) id = u.pathname.split("/")[2];
+      else id = u.searchParams.get("v");
+    }
+    if (!id) return null;
+    return `https://www.youtube.com/embed/${id}`;
+  } catch (e) {
+    return null;
+  }
+}
 
 function useOnlineStatus() {
   const [online, setOnline] = useState(() =>
@@ -303,33 +381,69 @@ function generateSchedule(data) {
 
   // Tracks how many sessions of each assignment have already landed on each day,
   // so later sessions of the same subject prefer a fresh day instead of piling
-  // onto a day that already has that subject (avoids back-to-back repeats).
+  // onto a day that already has that subject (spreads a subject across the week).
   const assignmentDayCount = {};
   assignments.forEach((a) => {
     assignmentDayCount[a.id] = Array(numDays).fill(0);
   });
 
+  // Penalty for a candidate slot putting a teacher's own periods back-to-back (or
+  // one period apart) on the same day, so a teacher's timetable comes out spread
+  // through the day instead of clumped together.
+  const teacherAdjacencyPenalty = (teacherId, di, p) => {
+    let penalty = 0;
+    if (p > 0 && teacherBusy[di][p - 1].has(teacherId)) penalty += 2;
+    if (p < periodsPerDay - 1 && teacherBusy[di][p + 1].has(teacherId)) penalty += 2;
+    if (p > 1 && teacherBusy[di][p - 2].has(teacherId)) penalty += 1;
+    if (p < periodsPerDay - 2 && teacherBusy[di][p + 2].has(teacherId)) penalty += 1;
+    return penalty;
+  };
+
+  // Penalty for a candidate slot putting the same subject twice in a row for the
+  // same class on the same day.
+  const classSubjectAdjacencyPenalty = (classId, subjectId, di, p) => {
+    let penalty = 0;
+    const prev = byClass[classId][di][p - 1];
+    const next = byClass[classId][di][p + 1];
+    if (prev && prev.subjectId === subjectId) penalty += 1;
+    if (next && next.subjectId === subjectId) penalty += 1;
+    return penalty;
+  };
+
   const unplaced = [];
 
   for (const s of sessions) {
-    let placed = false;
     const dayOrder = Array.from({ length: numDays }, (_, di) => di).sort(
       (a, b) => assignmentDayCount[s.id][a] - assignmentDayCount[s.id][b]
     );
-    outer: for (const di of dayOrder) {
+
+    // Instead of grabbing the very first free slot, scan every free slot on the
+    // least-used day(s) and score each one; the slot with the lowest "clumping"
+    // penalty wins. This is what keeps a teacher's or a class's periods from
+    // landing back-to-back or one period apart.
+    let best = null; // { di, p, penalty }
+    for (const di of dayOrder) {
       for (let p = 0; p < periodsPerDay; p++) {
         const classSlotFree = !byClass[s.classId][di][p];
         const teacherFree = !teacherBusy[di][p].has(s.teacherId);
-        if (classSlotFree && teacherFree) {
-          byClass[s.classId][di][p] = { teacherId: s.teacherId, subjectId: s.subjectId, assignmentId: s.id };
-          teacherBusy[di][p].add(s.teacherId);
-          assignmentDayCount[s.id][di] += 1;
-          placed = true;
-          break outer;
-        }
+        if (!classSlotFree || !teacherFree) continue;
+        const penalty =
+          teacherAdjacencyPenalty(s.teacherId, di, p) +
+          classSubjectAdjacencyPenalty(s.classId, s.subjectId, di, p);
+        if (!best || penalty < best.penalty) best = { di, p, penalty };
+        if (best.penalty === 0) break;
       }
+      if (best && best.penalty === 0) break;
     }
-    if (!placed) unplaced.push(s);
+
+    if (best) {
+      const { di, p } = best;
+      byClass[s.classId][di][p] = { teacherId: s.teacherId, subjectId: s.subjectId, assignmentId: s.id };
+      teacherBusy[di][p].add(s.teacherId);
+      assignmentDayCount[s.id][di] += 1;
+    } else {
+      unplaced.push(s);
+    }
   }
 
   return { byClass, unplaced, periodsPerDay, numDays, generatedAt: new Date().toISOString() };
@@ -1023,7 +1137,134 @@ function TeacherView({ data, t, registerExport }) {
   );
 }
 
-function TopMenu({ theme, setTheme, lang, setLang, t, onSavePdf, onSaveImage, canExport }) {
+function TutorialModal({ t, data, setData, role, onClose }) {
+  const [videoInput, setVideoInput] = useState(data.config.tutorialVideoUrl || "");
+  const [videoError, setVideoError] = useState(false);
+
+  const steps = [
+    { icon: LogIn, title: t.tutorialStep1Title, desc: t.tutorialStep1Desc },
+    { icon: Users, title: t.tutorialStep2Title, desc: t.tutorialStep2Desc },
+    { icon: Building2, title: t.tutorialStep3Title, desc: t.tutorialStep3Desc },
+    { icon: BookOpen, title: t.tutorialStep4Title, desc: t.tutorialStep4Desc },
+    { icon: ClipboardList, title: t.tutorialStep5Title, desc: t.tutorialStep5Desc },
+    { icon: CalendarDays, title: t.tutorialStep6Title, desc: t.tutorialStep6Desc },
+    { icon: FileDown, title: t.tutorialStep7Title, desc: t.tutorialStep7Desc },
+    { icon: GraduationCap, title: t.tutorialStep8Title, desc: t.tutorialStep8Desc },
+  ];
+
+  const embedUrl = getYouTubeEmbedUrl(data.config.tutorialVideoUrl);
+
+  const saveVideo = () => {
+    const trimmed = videoInput.trim();
+    if (trimmed && !getYouTubeEmbedUrl(trimmed)) {
+      setVideoError(true);
+      return;
+    }
+    setVideoError(false);
+    setData({ ...data, config: { ...data.config, tutorialVideoUrl: trimmed } });
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto py-6 px-4" role="dialog" aria-modal="true">
+      <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.6)" }} onClick={onClose} />
+      <div className="relative bg-panel border border-border-strong rounded-2xl shadow-2xl w-full max-w-2xl overflow-hidden">
+        <div className="flex items-start justify-between gap-3 px-5 py-4 border-b border-border">
+          <div className="flex items-center gap-2.5">
+            <div
+              className="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+              style={{ background: "linear-gradient(135deg,#8B7CF6,#2DD4BF)" }}
+            >
+              <HelpCircle size={17} className="text-white" />
+            </div>
+            <div>
+              <h2 className="font-display text-base text-text leading-tight">{t.tutorialTitle}</h2>
+              <p className="text-11 text-text-faint mt-0.5">{t.tutorialSubtitle}</p>
+            </div>
+          </div>
+          <button onClick={onClose} className="text-text-faint hover-text-text shrink-0" aria-label={t.menuClose}>
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="px-5 py-4 max-h-[75vh] overflow-y-auto">
+          <div className="flex items-center gap-2 text-xs font-semibold text-text-faint uppercase tracking-wide mb-2">
+            <Video size={13} /> {t.tutorialVideoLabel}
+          </div>
+
+          {embedUrl ? (
+            <div className="rounded-xl overflow-hidden border border-border-strong mb-2" style={{ aspectRatio: "16/9" }}>
+              <iframe
+                src={embedUrl}
+                title={t.tutorialVideoLabel}
+                className="w-full h-full"
+                style={{ border: 0 }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-xs text-text-faint bg-panel-soft border border-border rounded-lg px-3 py-3 mb-2">
+              <Youtube size={14} className="shrink-0" />
+              {t.tutorialVideoEmpty}
+            </div>
+          )}
+
+          {role === "admin" && (
+            <div className="mb-5">
+              <div className="flex flex-col sm:flex-row gap-2">
+                <input
+                  value={videoInput}
+                  onChange={(e) => {
+                    setVideoInput(e.target.value);
+                    setVideoError(false);
+                  }}
+                  placeholder={t.tutorialVideoPlaceholder}
+                  className={`flex-1 bg-panel-soft border rounded-lg px-3 py-2 text-sm text-text placeholder-text-faint focus-border-accent ${
+                    videoError ? "border-danger-30" : "border-border-strong"
+                  }`}
+                />
+                <Btn onClick={saveVideo} variant="primary">
+                  {t.tutorialVideoSave}
+                </Btn>
+              </div>
+              {videoError && <p className="text-11 text-danger mt-1.5">{t.tutorialVideoInvalid}</p>}
+              <p className="text-11 text-text-faint mt-1.5">{t.tutorialVideoHint}</p>
+            </div>
+          )}
+
+          <div className="text-xs font-semibold text-text-faint uppercase tracking-wide mb-2.5 mt-1">
+            {t.tutorialStepsHeading}
+          </div>
+          <div className="flex flex-col gap-2.5">
+            {steps.map((s, i) => {
+              const Icon = s.icon;
+              const color = TEACHER_COLORS[i % TEACHER_COLORS.length];
+              return (
+                <div
+                  key={i}
+                  className="flex items-start gap-3 bg-panel-soft border border-border rounded-xl px-3.5 py-3"
+                >
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+                    style={{ background: color.bg }}
+                  >
+                    <Icon size={15} style={{ color: color.text }} />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-text leading-tight">{s.title}</p>
+                    <p className="text-xs text-text-dim leading-relaxed mt-1">{s.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TopMenu({ theme, setTheme, lang, setLang, t, onSavePdf, onSaveImage, canExport, onOpenTutorial }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -1051,6 +1292,18 @@ function TopMenu({ theme, setTheme, lang, setLang, t, onSavePdf, onSaveImage, ca
             <span className="text-xs font-semibold text-text-faint uppercase tracking-wide">Menu</span>
             <button onClick={() => setOpen(false)} className="text-text-faint hover-text-text">
               <X size={14} />
+            </button>
+          </div>
+
+          <div className="px-4 py-3 border-b border-border">
+            <button
+              onClick={() => {
+                setOpen(false);
+                onOpenTutorial();
+              }}
+              className="flex items-center gap-2 text-sm text-text hover-text-accent w-full"
+            >
+              <HelpCircle size={15} className="text-accent" /> {t.menuTutorial}
             </button>
           </div>
 
@@ -1212,6 +1465,7 @@ function GlobalStyle() {
         .hover-border-accent:hover { border-color: var(--accent); }
         .hover-text-danger:hover { color: var(--danger); }
         .hover-text-text:hover { color: var(--text); }
+        .hover-text-accent:hover { color: var(--accent); }
         .focus-border-accent:focus { border-color: var(--accent); outline: none; }
 
         @media print {
@@ -1363,6 +1617,7 @@ export default function App() {
   const [exportImageFn, setExportImageFn] = useState(null);
   const [navOpen, setNavOpen] = useState(false);
   const [showUsage, setShowUsage] = useState(true);
+  const [showTutorial, setShowTutorial] = useState(false);
 
   const t = STRINGS[lang];
 
@@ -1456,6 +1711,7 @@ export default function App() {
                   canExport={canExport}
                   onSavePdf={() => window.print()}
                   onSaveImage={() => exportImageFn && exportImageFn()}
+                  onOpenTutorial={() => setShowTutorial(true)}
                 />
                 <button
                   onClick={handleLogout}
@@ -1668,6 +1924,10 @@ export default function App() {
         <footer className="max-w-5xl mx-auto px-5 md:px-8 py-6 text-center">
           <p className="text-11 text-text-faint">{t.footerCredit}</p>
         </footer>
+
+        {showTutorial && (
+          <TutorialModal t={t} data={data} setData={setData} role={role} onClose={() => setShowTutorial(false)} />
+        )}
       </div>
     </div>
   );
